@@ -35,6 +35,7 @@ while play_again == true
   cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
 
   # Use 3 decks
+  deck = []
   3.times do 
     deck << cards.product(suits)
   end
@@ -68,7 +69,6 @@ while play_again == true
   # Player hit/stay loop
   if calc_total(player_hand) == 21
     say "Winner! Winner!! You have blackjack!"
-    exit
   end
 
   while calc_total(player_hand) < 21
@@ -98,9 +98,8 @@ while play_again == true
   end
 
   # Dealer hit/stay loop
-  if calc_total(dealer_hand) == 21
+  if calc_total(dealer_hand) == 21 && calc_total(player_hand) != 21
     say "Sorry #{player_name}, dealer hit blackjack. You lose."
-    #break
   end
 
 
@@ -128,17 +127,26 @@ while play_again == true
     end
   end
 
-  say "Would you like to play again?(Y/N)"
-  choice = gets.chomp.downcase
-
-  if !['y', 'n'].include?(choice)
-    say "Sorry, enter in Y or N"
-  elsif choice == 'y'
-    puts
-    puts
-    play_again = true
-  else choice = 'n'
-    say "Thanks for playing #{player_name}"
-    play_again = false
+  #option to stop play again loop
+  choose = true
+  while choose == true
+    say "Would you like to play again? 1) Yes 2) No"
+    play_choice = gets.chomp
+    if !['1', '2'].include?(play_choice)
+      puts "Sorry, you must enter 1 or 2"
+      choose = true
+      next 
+    elsif play_choice == '1'
+      puts
+      puts
+      choose = false
+      play_again = true
+      break
+    elsif play_choice = '2'
+      say "Thanks for playing #{player_name}"
+      choose = false
+      play_again = false
+      break
+    end
   end
 end
